@@ -13,6 +13,11 @@ namespace Yansoft.Jwt
     {
         private readonly JwtAuthenticator _jwt;
 
+        public JwtLoginService(JwtAuthenticator jwt)
+        {
+            _jwt = jwt;
+        }
+
         public virtual Task<TUserLogin> LogInAsync(TUser user)
         {
             return LogInAsync(user, new string[0]);

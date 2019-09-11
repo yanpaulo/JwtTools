@@ -13,6 +13,12 @@ namespace Yansoft.Jwt.EF
         where TDbContext : DbContext
     {
         private readonly TDbContext _db;
+
+        public JwtEFLoginService(JwtAuthenticator jwt, TDbContext db) : base(jwt)
+        {
+            _db = db;
+        }
+
         public override async Task<TUserLogin> LogInAsync(TUser user, IEnumerable<string> roles)
         {
             var login = await base.LogInAsync(user, roles);

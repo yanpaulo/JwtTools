@@ -15,7 +15,14 @@ namespace Yansoft.Jwt
         where TUserKey : IEquatable<TUserKey>
         where TDbContext : DbContext
     {
+        
         private readonly TDbContext _db;
+
+        public JwtEFIdentityLoginService(JwtAuthenticator jwt, UserManager<TUser> userManager, SignInManager<TUser> signInManager, TDbContext db) : base(jwt, userManager, signInManager)
+        {
+            _db = db;
+        }
+
 
         public override async Task<TUserLogin> LogInAsync(TUser user, IEnumerable<string> roles)
         {

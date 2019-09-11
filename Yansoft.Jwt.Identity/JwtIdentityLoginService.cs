@@ -13,6 +13,12 @@ namespace Yansoft.Jwt.Identity
         private readonly UserManager<TUser> _userManager;
         private readonly SignInManager<TUser> _signInManager;
 
+        public JwtIdentityLoginService(JwtAuthenticator jwt, UserManager<TUser> userManager, SignInManager<TUser> signInManager) : base(jwt)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+        }
+
         public async Task<TUserLogin> LogInAsync(TUser user, string password, bool isPersistent, bool lockoutOnFailure)
         {
             var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure);
