@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Yansoft.Jwt.Identity;
 
 namespace Yansoft.Jwt
 {
-    public class JwtIdentityLoginService<TUser, TUserLogin, TUserKey, TDbContext> : JwtIdentityLoginService<TUser, TUserLogin, TUserKey>
+    public class JwtEFIdentityLoginService<TUser, TUserLogin, TUserKey, TDbContext> : JwtIdentityLoginService<TUser, TUserLogin, TUserKey>, IJwtLoginRefreshService<TUser, TUserLogin>
         where TUser : IdentityUser<TUserKey>, IJwtUser<TUserLogin>
-        where TUserLogin : IJwtLogin, new()
+        where TUserLogin : class, IJwtLogin, new()
         where TUserKey : IEquatable<TUserKey>
         where TDbContext : DbContext
     {
@@ -17,9 +19,33 @@ namespace Yansoft.Jwt
 
         public override async Task<TUserLogin> LogInAsync(TUser user, IEnumerable<string> roles)
         {
+            await _db.Entry(user).Collection(u => u.Logins).LoadAsync();
             var login = await base.LogInAsync(user, roles);
             await _db.SaveChangesAsync();
             return login;
+        }
+
+        public async Task<TUserLogin> RefreshAsync(TUser user, string refreshToken)
+        {
+            await _db.Entry(user).Collection(u => u.Logins).LoadAsync();
+            var now = DateTimeOffset.Now;
+            var oldLogin = user.Logins.FirstOrDefault(l => l.RefreshToken == refreshToken && (l.RefreshTokenExpireDate == null || l.RefreshTokenExpireDate < now));
+            var newLogin = await LogInAsync(user);
+            user.Logins.Remove(oldLogin);
+            await _db.SaveChangesAsync();
+            return newLogin;
+        }
+    }
+
+    public static class JwtEFIdentityLoginServiceExtensions
+    {
+        public static IServiceCollection AddJwtLogin<TUser, TUserLogin, TUserKey, TDbContext>(this IServiceCollection services)
+            where TUser : IdentityUser<TUserKey>, IJwtUser<TUserLogin>
+            where TUserLogin : class, IJwtLogin, new()
+            where TUserKey : IEquatable<TUserKey>
+            where TDbContext : DbContext
+        {
+            return services.AddScoped<IJwtLoginRefreshService<TUser, TUserLogin>, JwtEFIdentityLoginService<TUser, TUserLogin, TUserKey, TDbContext>>();
         }
     }
 }

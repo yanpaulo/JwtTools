@@ -8,8 +8,7 @@ using Yansoft.Jwt;
 
 namespace Yansoft.Jwt
 {
-    public class JwtLoginService<TUser, TUserLogin> 
-        where TUser : IJwtUser<TUserLogin>
+    public class JwtLoginService<TUser, TUserLogin> : IJwtLoginService<TUser, TUserLogin> where TUser : IJwtUser<TUserLogin>
         where TUserLogin : IJwtLogin, new()
     {
         private readonly JwtAuthenticator _jwt;

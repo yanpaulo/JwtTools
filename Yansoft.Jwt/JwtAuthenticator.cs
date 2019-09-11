@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Yansoft.Jwt
 {
-    public class JwtAuthenticator
+    public class JwtAuthenticator : IJwtAuthenticator
     {
         public JwtAuthenticator(TokenValidationParameters tokenValidationParameters, JwtAuthenticationOptions options)
         {
@@ -27,24 +27,24 @@ namespace Yansoft.Jwt
             LogIn(userName, new string[0]);
 
         public JwtLoginResult LogIn(string userName, IEnumerable<string> roles) =>
-            LogIn(userName, roles, Options.AccessTokenExpireTime);
+            LogIn(userName, roles, Options);
 
-        public JwtLoginResult LogIn(string userName, IEnumerable<string> roles, TimeSpan? expireTime)
+        public JwtLoginResult LogIn(string userName, IEnumerable<string> roles, JwtAuthenticationOptions options)
         {
             var handler = new JwtSecurityTokenHandler();
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, userName) };
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
-            
+
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Issuer = Options.Issuer,
                 Audience = Options.Audience,
                 IssuedAt = DateTime.UtcNow,
-                Expires = expireTime.HasValue ? DateTime.UtcNow + expireTime : null,
-                SigningCredentials = new SigningCredentials(SigningKey, Options.SigningAlgorithm)
+                Expires = options.AccessTokenExpireTime.HasValue ? DateTime.UtcNow + options.AccessTokenExpireTime : null,
+                SigningCredentials = new SigningCredentials(TokenValidationParameters.IssuerSigningKey, options.SigningAlgorithm)
             };
-            
+
             var token = handler.CreateToken(descriptor);
             return new JwtLoginResult(userName, handler.WriteToken(token), descriptor.Expires);
         }

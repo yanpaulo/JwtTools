@@ -14,47 +14,66 @@ namespace Yansoft.Jwt
         public const string DefaultConfigurationSection = "JWT";
 
         #region Main Implementations
-        public static void AddJwtAuthentication(this IServiceCollection services, Action<JwtBearerOptions> configureOptions, JwtAuthenticationOptions options)
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, JwtAuthenticationOptions options, Action<JwtBearerOptions> configureOptions)
         {
             var optionsInstance = new JwtBearerOptions();
             configureOptions(optionsInstance);
             var jwtService = new JwtAuthenticator(optionsInstance.TokenValidationParameters, options);
 
             services.AddAuthentication().AddJwtBearer(configureOptions);
-            services.AddSingleton(jwtService);
+            return services.AddSingleton<IJwtAuthenticator>(jwtService);
         }
 
-        public static void AddJwtAuthentication(this IServiceCollection services, JwtAuthenticationOptions options)
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, JwtAuthenticationOptions options, TokenValidationParameters parameters)
+        {
+
+            return services.AddJwtAuthentication(options, jwt =>
+            {
+                jwt.TokenValidationParameters = parameters;
+            });
+        }
+
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, JwtAuthenticationOptions options)
         {
             var key = System.Text.Encoding.ASCII.GetBytes(options.Secret);
 
-            AddJwtAuthentication(services, jwt =>
+            var parameters = new TokenValidationParameters
             {
-                jwt.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key)
-                };
-            }, options);
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            };
+
+            return services.AddJwtAuthentication(options, parameters);
         }
+
+        
         #endregion
 
         #region Utility Overloads
-        public static void AddJwtAuthentication(this IServiceCollection services, Action<JwtBearerOptions> configureOptions, string configurationSection = DefaultConfigurationSection)
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, Action<JwtBearerOptions> configureOptions, string configurationSection = DefaultConfigurationSection)
         {
             var provider = services.BuildServiceProvider();
             var options = provider.GetService<IConfiguration>().GetSection(configurationSection).Get<JwtAuthenticationOptions>();
-            AddJwtAuthentication(services, configureOptions, options);
+
+            return services.AddJwtAuthentication(options, configureOptions);
         }
 
-        public static void AddJwtAuthentication(this IServiceCollection services, string configurationSection = DefaultConfigurationSection)
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, TokenValidationParameters parameters, string configurationSection = DefaultConfigurationSection)
         {
             var provider = services.BuildServiceProvider();
             var options = provider.GetService<IConfiguration>().GetSection(configurationSection).Get<JwtAuthenticationOptions>() ?? new JwtAuthenticationOptions();
 
-            AddJwtAuthentication(services, options);
+            return services.AddJwtAuthentication(options, parameters);
+        }
+
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, string configurationSection = DefaultConfigurationSection)
+        {
+            var provider = services.BuildServiceProvider();
+            var options = provider.GetService<IConfiguration>().GetSection(configurationSection).Get<JwtAuthenticationOptions>() ?? new JwtAuthenticationOptions();
+
+            return services.AddJwtAuthentication(options);
         }
         #endregion
 

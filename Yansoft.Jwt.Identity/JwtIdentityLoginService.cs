@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Yansoft.Jwt.Identity
 {
@@ -22,6 +23,23 @@ namespace Yansoft.Jwt.Identity
         {
             var roles = await _userManager.GetRolesAsync(user);
             return await LogInAsync(user, roles);
+        }
+    }
+    public static class JwtIdentityLoginServiceExtensions
+    {
+        public static IServiceCollection AddJwtLogin<TUser, TUserLogin>(this IServiceCollection services)
+            where TUser : IdentityUser<string>, IJwtUser<TUserLogin>
+            where TUserLogin : IJwtLogin, new()
+        {
+            return services.AddJwtLogin<TUser, TUserLogin, string>();
+        }
+
+        public static IServiceCollection AddJwtLogin<TUser, TUserLogin, TUserKey>(this IServiceCollection services)
+            where TUser : IdentityUser<TUserKey>, IJwtUser<TUserLogin>
+            where TUserLogin : IJwtLogin, new()
+            where TUserKey : IEquatable<TUserKey>
+        {
+            return services.AddScoped<IJwtLoginService<TUser, TUserLogin>, JwtIdentityLoginService<TUser, TUserLogin, TUserKey>>();
         }
     }
 }
