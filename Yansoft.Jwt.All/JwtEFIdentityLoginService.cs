@@ -9,6 +9,7 @@ using Yansoft.Jwt.Identity;
 
 namespace Yansoft.Jwt
 {
+    
     public class JwtEFIdentityLoginService<TUser, TUserLogin, TUserKey, TDbContext> : JwtIdentityLoginService<TUser, TUserLogin, TUserKey>, IJwtLoginRefreshService<TUser, TUserLogin>
         where TUser : IdentityUser<TUserKey>, IJwtUser<TUserLogin>
         where TUserLogin : class, IJwtLogin, new()
@@ -44,6 +45,16 @@ namespace Yansoft.Jwt
         }
     }
 
+    public class JwtEFIdentityLoginService<TUser, TUserLogin, TDbContext> : JwtEFIdentityLoginService<TUser, TUserLogin, string, TDbContext>
+        where TUser : IdentityUser<string>, IJwtUser<TUserLogin>
+        where TUserLogin : class, IJwtLogin, new()
+        where TDbContext : DbContext
+    {
+        public JwtEFIdentityLoginService(JwtAuthenticator jwt, UserManager<TUser> userManager, SignInManager<TUser> signInManager, TDbContext db) : base(jwt, userManager, signInManager, db)
+        {
+        }
+    }
+
     public static class JwtEFIdentityLoginServiceExtensions
     {
         public static IServiceCollection AddJwtLogin<TUser, TUserLogin, TUserKey, TDbContext>(this IServiceCollection services)
@@ -53,6 +64,14 @@ namespace Yansoft.Jwt
             where TDbContext : DbContext
         {
             return services.AddScoped<IJwtLoginRefreshService<TUser, TUserLogin>, JwtEFIdentityLoginService<TUser, TUserLogin, TUserKey, TDbContext>>();
+        }
+
+        public static IServiceCollection AddJwtLogin<TUser, TUserLogin, TDbContext>(this IServiceCollection services)
+            where TUser : IdentityUser<string>, IJwtUser<TUserLogin>
+            where TUserLogin : class, IJwtLogin, new()
+            where TDbContext : DbContext
+        {
+            return services.AddScoped<IJwtLoginRefreshService<TUser, TUserLogin>, JwtEFIdentityLoginService<TUser, TUserLogin, TDbContext>>();
         }
     }
 }
