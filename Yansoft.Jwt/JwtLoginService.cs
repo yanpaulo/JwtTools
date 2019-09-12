@@ -11,9 +11,9 @@ namespace Yansoft.Jwt
     public class JwtLoginService<TUser, TUserLogin> : IJwtLoginService<TUser, TUserLogin> where TUser : IJwtUser<TUserLogin>
         where TUserLogin : IJwtLogin, new()
     {
-        private readonly JwtAuthenticator _jwt;
+        private readonly IJwtAuthenticator _jwt;
 
-        public JwtLoginService(JwtAuthenticator jwt)
+        public JwtLoginService(IJwtAuthenticator jwt)
         {
             _jwt = jwt;
         }
@@ -37,7 +37,7 @@ namespace Yansoft.Jwt
                 RefreshTokenExpireDate = now + TimeSpan.FromDays(7),
                 IssuedAt = now
             };
-            user.Logins.Add(login);
+            user.UserLogins?.Add(login);
             return Task.FromResult(login);
         }
 

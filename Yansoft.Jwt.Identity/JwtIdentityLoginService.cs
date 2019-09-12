@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Yansoft.Jwt.Identity
+namespace Yansoft.Jwt
 {
     
-    public class JwtIdentityLoginService<TUser, TUserLogin, TUserKey> : JwtLoginService<TUser, TUserLogin>
+    public class JwtIdentityLoginService<TUser, TUserLogin, TUserKey> : JwtLoginService<TUser, TUserLogin>, IJwtPasswordLoginService<TUser, TUserLogin>
         where TUser : IdentityUser<TUserKey>, IJwtUser<TUserLogin>
         where TUserLogin : IJwtLogin, new()
         where TUserKey : IEquatable<TUserKey>
@@ -15,7 +15,7 @@ namespace Yansoft.Jwt.Identity
         private readonly UserManager<TUser> _userManager;
         private readonly SignInManager<TUser> _signInManager;
 
-        public JwtIdentityLoginService(JwtAuthenticator jwt, UserManager<TUser> userManager, SignInManager<TUser> signInManager) : base(jwt)
+        public JwtIdentityLoginService(IJwtAuthenticator jwt, UserManager<TUser> userManager, SignInManager<TUser> signInManager) : base(jwt)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -32,7 +32,7 @@ namespace Yansoft.Jwt.Identity
             return await base.LogInAsync(user);
         }
 
-        public async Task<TUserLogin> LogInAsync(TUser user, string password, bool isPersistent, bool lockoutOnFailure)
+        public virtual async Task<TUserLogin> LogInAsync(TUser user, string password, bool isPersistent, bool lockoutOnFailure)
         {
             var result = await _signInManager.PasswordSignInAsync(user, password, isPersistent, lockoutOnFailure);
             if (!result.Succeeded)
@@ -43,6 +43,18 @@ namespace Yansoft.Jwt.Identity
                 throw exception;
             }
             return await LogInAsync(user);
+        }
+
+        public async Task<TUserLogin> PasswordLogInAsync(string userName, string password, bool isPersistent, bool lockoutOnFailure)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
+            {
+                var exception = new InvalidOperationException($"Login failed for user {userName}");
+                exception.Data[nameof(userName)] = userName;
+                throw exception;
+            }
+            return await LogInAsync(user, password, isPersistent, lockoutOnFailure);
         }
     }
 
@@ -61,8 +73,7 @@ namespace Yansoft.Jwt.Identity
             where TUser : IdentityUser<string>, IJwtUser<TUserLogin>
             where TUserLogin : IJwtLogin, new()
         {
-            return services.AddScoped<IJwtLoginService<TUser, TUserLogin>, JwtIdentityLoginService<TUser, TUserLogin>>();
-
+            return services.AddScoped<IJwtPasswordLoginService<TUser, TUserLogin>, JwtIdentityLoginService<TUser, TUserLogin>>();
         }
 
         public static IServiceCollection AddJwtLogin<TUser, TUserLogin, TUserKey>(this IServiceCollection services)
@@ -70,7 +81,7 @@ namespace Yansoft.Jwt.Identity
             where TUserLogin : IJwtLogin, new()
             where TUserKey : IEquatable<TUserKey>
         {
-            return services.AddScoped<IJwtLoginService<TUser, TUserLogin>, JwtIdentityLoginService<TUser, TUserLogin, TUserKey>>();
+            return services.AddScoped<IJwtPasswordLoginService<TUser, TUserLogin>, JwtIdentityLoginService<TUser, TUserLogin, TUserKey>>();
         }
     }
 }
