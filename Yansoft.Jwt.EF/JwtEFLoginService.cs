@@ -28,11 +28,11 @@ namespace Yansoft.Jwt.EF
 
         public async Task<TUserLogin> RefreshAsync(TUser user, string refreshToken)
         {
-            await _db.Entry(user).Collection(u => u.Logins).LoadAsync();
+            await _db.Entry(user).Collection(u => u.UserLogins).LoadAsync();
             var now = DateTimeOffset.Now;
-            var oldLogin = user.Logins.FirstOrDefault(l => l.RefreshToken == refreshToken && (l.RefreshTokenExpireDate == null || l.RefreshTokenExpireDate < now));
+            var oldLogin = user.UserLogins.FirstOrDefault(l => l.RefreshToken == refreshToken && (l.RefreshTokenExpireDate == null || l.RefreshTokenExpireDate < now));
             var newLogin = await LogInAsync(user);
-            user.Logins.Remove(oldLogin);
+            user.UserLogins.Remove(oldLogin);
             await _db.SaveChangesAsync();
             return newLogin;
         }
