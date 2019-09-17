@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Yansoft.Jwt</RootNamespace>
+    <Version>0.1</Version>
+    <Authors>Yan Paulo</Authors>
+    <Company>Yansoft</Company>
+    <Description>.NET Core DI System integration for Yansoft.Jwt
+Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused on (but not limited to) ASP.NET Core.</Description>
   </PropertyGroup>
 
   <ItemGroup>

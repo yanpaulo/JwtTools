@@ -3,13 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Yansoft.Jwt</RootNamespace>
+    <Version>0.1</Version>
+    <Authors>Yan Paulo</Authors>
+    <Company>Yansoft</Company>
+    <Description>ASP.NET Core Identity integration for Yansoft.Jwt
+Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused on (but not limited to) ASP.NET Core.</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
