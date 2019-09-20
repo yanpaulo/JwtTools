@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Yansoft.Jwt</RootNamespace>
-    <Version>0.1-alpha</Version>
+    <Version>0.1.1-alpha</Version>
     <Authors>Yan Paulo</Authors>
     <Company>Yansoft</Company>
     <Description>.NET Core DI System integration for Yansoft.Jwt
@@ -16,9 +16,9 @@ Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.4" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
     <PackageReference Include="Yansoft.Jwt" Version="0.1.0-alpha" />
   </ItemGroup>
 
