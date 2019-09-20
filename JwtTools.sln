@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yansoft.Jwt.Identity", "Yan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yansoft.Jwt.EF", "Yansoft.Jwt.EF\Yansoft.Jwt.EF.csproj", "{7182C9F3-8A71-4CA0-8F20-EC749632E5BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yansoft.Jwt.All", "Yansoft.Jwt.All\Yansoft.Jwt.All.csproj", "{47824FAC-9CBC-4413-83D2-17F5F8045BD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JwtTools", "Yansoft.Jwt.All\JwtTools.csproj", "{47824FAC-9CBC-4413-83D2-17F5F8045BD9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yansoft.Jwt.Extensions", "Yansoft.Jwt.Extensions\Yansoft.Jwt.Extensions.csproj", "{B52C2EBC-849F-4FBE-8D7B-7CDE6FB7371E}"
 EndProject
