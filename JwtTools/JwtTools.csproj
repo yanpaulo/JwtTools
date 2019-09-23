@@ -1,7 +1,30 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Yansoft.Jwt</RootNamespace>
+    <Version>0.1.1-alpha</Version>
+    <Company>Yansoft</Company>
+    <Product>JwtTools</Product>
+    <Authors>Yan Paulo</Authors>
+    <PackageProjectUrl>https://github.com/yanpaulo/JwtTools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yanpaulo/JwtTools</RepositoryUrl>
+    <PackageTags>jwt auth authentication</PackageTags>
+    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <Description>JwtTools is a Yansoft.Jwt bundle featuring integration for ASP.NET Core DI System, Identity System &amp; Entity Framework Core.
+Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused on (but not limited to) ASP.NET Core.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
+    <PackageReference Include="Yansoft.Jwt.Extensions" Version="0.1.1-alpha" />
+    <PackageReference Include="Yansoft.Jwt.Identity" Version="0.1.0-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Yansoft.Jwt.Extensions\Yansoft.Jwt.Extensions.csproj" />
+    <ProjectReference Include="..\Yansoft.Jwt.Identity\Yansoft.Jwt.Identity.csproj" />
+  </ItemGroup>
 
 </Project>
