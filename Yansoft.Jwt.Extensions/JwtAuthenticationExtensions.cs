@@ -39,8 +39,10 @@ namespace Yansoft.Jwt
 
             var parameters = new TokenValidationParameters
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
+                ValidIssuer = options.Issuer,
+                ValidAudience = options.Audience,
+                ValidateIssuer = options.Issuer != null,
+                ValidateAudience = options.Audience != null,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };
@@ -71,7 +73,7 @@ namespace Yansoft.Jwt
         public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, string configurationSection = DefaultConfigurationSection)
         {
             var provider = services.BuildServiceProvider();
-            var options = provider.GetService<IConfiguration>().GetSection(configurationSection).Get<JwtAuthenticationOptions>() ?? new JwtAuthenticationOptions();
+            var options = provider.GetService<IConfiguration>().GetSection(configurationSection).Get<JwtAuthenticationOptions>();
 
             return services.AddJwtAuthentication(options);
         }
