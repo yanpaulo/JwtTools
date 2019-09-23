@@ -16,6 +16,11 @@ Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
     <PackageReference Include="Yansoft.Jwt.Extensions" Version="0.1.1-alpha" />
