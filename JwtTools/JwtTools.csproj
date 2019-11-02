@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Yansoft.Jwt</RootNamespace>
-    <Version>0.2-alpha</Version>
+    <Version>0.2.2-alpha</Version>
     <Company>Yansoft</Company>
     <Product>JwtTools</Product>
     <Authors>Yan Paulo</Authors>
@@ -23,8 +23,6 @@ Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused
   
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0" />
-    <PackageReference Include="Yansoft.Jwt.Extensions" Version="0.1.2-alpha" />
-    <PackageReference Include="Yansoft.Jwt.Identity" Version="0.1.0-alpha" />
   </ItemGroup>
 
   <ItemGroup>
