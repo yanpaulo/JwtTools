@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Yansoft.Jwt</RootNamespace>
-    <Version>0.1.2-alpha</Version>
+    <Version>0.2-alpha</Version>
     <Company>Yansoft</Company>
     <Product>JwtTools</Product>
     <Authors>Yan Paulo</Authors>
