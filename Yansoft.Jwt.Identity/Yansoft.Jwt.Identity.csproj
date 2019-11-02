@@ -22,7 +22,7 @@ Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.4" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="2.0.0" />
   </ItemGroup>
 
