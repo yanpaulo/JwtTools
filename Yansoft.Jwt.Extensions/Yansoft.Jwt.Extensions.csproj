@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Yansoft.Jwt</RootNamespace>
-    <Version>0.1.5-alpha</Version>
+    <Version>0.1.6-alpha</Version>
     <Authors>Yan Paulo</Authors>
     <Company>Yansoft</Company>
     <Description>.NET Core DI System integration for Yansoft.Jwt
