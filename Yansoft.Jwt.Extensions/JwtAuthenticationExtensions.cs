@@ -43,6 +43,7 @@ namespace Yansoft.Jwt
                 ValidAudience = options.Audience,
                 ValidateIssuer = options.Issuer != null,
                 ValidateAudience = options.Audience != null,
+                ValidateLifetime = options.AccessTokenExpireTime != null,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key)
             };

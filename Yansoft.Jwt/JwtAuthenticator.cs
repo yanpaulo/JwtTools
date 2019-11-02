@@ -35,18 +35,20 @@ namespace Yansoft.Jwt
             var claims = new List<Claim> { new Claim(ClaimTypes.Name, userName) };
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
+            var now = DateTime.Now;
+
             var descriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
                 Issuer = Options.Issuer,
                 Audience = Options.Audience,
-                IssuedAt = DateTime.UtcNow,
-                Expires = options.AccessTokenExpireTime.HasValue ? DateTime.UtcNow + options.AccessTokenExpireTime : null,
+                IssuedAt = now,
+                Expires = now + options.AccessTokenExpireTime,
                 SigningCredentials = new SigningCredentials(TokenValidationParameters.IssuerSigningKey, options.SigningAlgorithm)
             };
 
             var token = handler.CreateToken(descriptor);
-            return new JwtLoginResult(userName, handler.WriteToken(token), descriptor.Expires);
+            return new JwtLoginResult(userName, handler.WriteToken(token), descriptor.IssuedAt.Value, descriptor.Expires);
         }
 
         public string ReadUserName(string token)

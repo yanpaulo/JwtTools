@@ -34,8 +34,8 @@ namespace Yansoft.Jwt
                 AccessToken = jwtResult.AccessToken,
                 AccessTokenExpireDate = jwtResult.ExpiresAt,
                 RefreshToken = GenerateRefreshToken(64),
-                RefreshTokenExpireDate = now + TimeSpan.FromDays(7),
-                IssuedAt = now
+                RefreshTokenExpireDate = jwtResult.ExpiresAt + _jwt.Options.RefreshTokenExpireTime,
+                IssuedAt = jwtResult.IssuedAt
             };
             user.UserLogins?.Add(login);
             return Task.FromResult(login);

@@ -7,5 +7,8 @@ namespace Yansoft.Jwt
         JwtLoginResult LogIn(string userName);
         JwtLoginResult LogIn(string userName, IEnumerable<string> roles);
         JwtLoginResult LogIn(string userName, IEnumerable<string> roles, JwtAuthenticationOptions options);
+
+        JwtAuthenticationOptions Options { get; }
+
     }
 }
