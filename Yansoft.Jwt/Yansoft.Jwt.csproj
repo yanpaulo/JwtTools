@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.2-alpha</Version>
+    <Version>0.2.1-alpha</Version>
     <Authors>Yan Paulo</Authors>
     <Company>Yansoft</Company>
     <Description>Yansoft.Jwt is a JWT &amp; Represh token generation &amp; authentication focused on (but not limited to) ASP.NET Core.
